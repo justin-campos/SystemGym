@@ -1,0 +1,289 @@
+{% extends 'layout.html'%}{% block title %} Asistencia - GYM SOURCE  {% endblock %}{% block content %}
+
+<!-- DataTables -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dataTables.bootstrap4.min.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/responsive.bootstrap4.min.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/buttons.bootstrap4.min.css') }}"
+/>
+<style>
+  #example1_filter{
+    display: none !important;
+  }
+</style>
+
+<div class="cotainer">
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="card card-danger mt-5">
+        <div class="card-header">
+          <h3 class="card-title">Asistencia</h3>
+        </div>
+        <div class="card-body"></div>
+        <!-- /.card-body -->
+
+        <!-- SELECT MIEMBRO O DIA -->
+        <div class="container">
+          <div class="form-group">
+            <label for="exampleSelectBorder"
+              >Selecciona el tipo de <code>asistencia</code></label
+            >
+            <select
+              onclick="mostrarFormulario()"
+              id="opciones"
+              class="custom-select rounded-0 form-control-lg"
+              id="exampleSelectBorder"
+              style="
+                height: calc(2.875rem + 2px) !important;
+                padding: 0.5rem 1rem !important;
+                font-size: 1.25rem !important;
+                line-height: 1.5 !important;
+                border-radius: 0.3rem;
+              "
+            >
+              <option value="miembro">miembro</option>
+              <option value="dia" selected>dia</option>
+            </select>
+          </div>
+        </div>
+        <!-- FIN SELECT MIEMBRO O DIA -->
+
+        <!-- FORMULARIO MIEMBRO -->
+        <div id="formulario1">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8">
+                <form action="/" method="post">
+                  <div class="dropdown hierarchy-select" id="example">
+                    <input
+                      type="text"
+                      name="nombremiembro"
+                      class="form-control form-control-lg rounded hs-searchbox mb-5"
+                      placeholder="Search"
+                      aria-label="Search"
+                      aria-describedby="search-addon"
+                      aria-labelledby="example-two-button"
+                      id="example-two-button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    />
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="example-two-button"
+                      style="width: 100%"
+                    >
+                      <div class="hs-searchbox">
+                        <input
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                        />
+                      </div>
+                      <div class="hs-menu-inner">
+                        {% for clientes in clientes %}
+                        <a
+                          class="dropdown-item"
+                          data-value="{{clientes.nombre}} {{clientes.apellido}}"
+                          value="{{clientes.idcliente}}"
+                          href="#"
+                          >{{clientes.nombre}} {{clientes.apellido}}</a
+                        >
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <input
+                      class="d-none"
+                      name="example_two"
+                      readonly="readonly"
+                      aria-hidden="true"
+                      type="text"
+                      id="hola"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-4">
+                <button class="btn btn-primary btn-lg btn-block">enviar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGUNDO FOMRULARIO -->
+        <div id="formulario2">
+          <div class="container mb-5">
+            <div class="row">
+
+              <div class="col-lg-8">
+                <form action="/" method="post">
+                  <div class="container">
+                    <div class="row">
+                      <input
+                      type="text"
+                      class="form-control form-control-lg rounded col-lg-6"
+                      placeholder="Nombre Completo!"
+                      aria-label="Search"
+                      name="nombrecliente"
+                    />
+  
+                    <input
+                      type="text"
+                      class="form-control form-control-lg rounded col-lg-6"
+                      placeholder="Apellido"
+                      aria-label="Search"
+                      name="nombrecliente"
+                    />
+                    </div>
+                  </div>
+
+
+
+                </form>
+              </div>
+
+
+                <div class="col-lg-4">
+                  <button class="btn btn-primary btn-lg btn-block">
+                    enviar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEGUNDO FOMRULARIO -->
+          </div>
+
+
+      </div>
+    </div>
+</div>
+
+    <!-- TABLA! -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <!-- <div class="card-header">
+            <h3 class="card-title">DataTable with default features</h3>
+          </div> -->
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Hora de entrada</th>
+                    <th>Estado de membresia</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for asistencia in asistencia%}
+                  <tr>
+                    <td>{{asistencia.nombre}}</td>
+                    <td>{{asistencia.apellido}}</td>
+                    <td>{{asistencia.fechahoraentrada}}</td>
+                    {% if asistencia.estadomembresia == 0 %}
+                    <td><span class="badge bg-danger">Inactivo {{asistencia.estadomembresia}}</span></td>
+                    {% else%}
+                    <td><span class="badge bg-success">Activo {{asistencia.estadomembresia}}</span></td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+
+    <script>
+      var formulario1 = document.getElementById("formulario1");
+      var formulario2 = document.getElementById("formulario2");
+      var f1fechahora = document.getElementById("f1fechahora");
+
+      formulario1.style.display = "none";
+      formulario2.style.display = "none";
+
+      function mostrarFormulario() {
+        var opciones = document.getElementById("opciones");
+        if (opciones.value === "miembro") {
+          formulario1.style.display = "block";
+          formulario2.style.display = "none";
+        } else {
+          formulario1.style.display = "none";
+          formulario2.style.display = "block";
+        }
+      }
+    </script>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", (event) => {
+        $(document).ready(function () {
+          $("#example").hierarchySelect({
+            hierarchy: false,
+            width: "auto",
+          });
+        });
+      });
+    </script>
+    {% block indexscript %}
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js')}}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jszip.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pdfmake.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vfs_fonts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/buttons.html5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/buttons.print.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/buttons.colVis.min.js') }}"></script>
+    <script>
+      //buscadortabla = document.getElementById("example1_filter");
+      //buscadortabla.style.display = "none";
+
+      $(function () {
+        $("#example1")
+          .DataTable({
+            responsive: true,
+            lengthChange: false,
+            autoWidth: false,
+            buttons: ["copy", "csv", "excel", "pdf", "print"],
+          })
+          .buttons()
+          .container()
+          .appendTo("#example1_wrapper .col-md-6:eq(0)");
+        $("#example2").DataTable({
+          paging: true,
+          lengthChange: false,
+          searching: false,
+          ordering: true,
+          info: true,
+          autoWidth: false,
+          responsive: true,
+        });
+      });
+    </script>
+    {% endblock %} {% endblock %}
+  </div>
+</div>
