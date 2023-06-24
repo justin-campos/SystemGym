@@ -15,3 +15,4 @@ db = SQL("sqlite:///gym.db")
 
 import routes.login
 import routes.index
+import routes.cliente

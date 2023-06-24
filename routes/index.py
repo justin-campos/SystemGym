@@ -10,8 +10,6 @@ app.config['SECRET_KEY'] = '123'
 @login_required
 def index():
 
-    print
-
     if request.method == "POST":
 
         # Obtener la fecha y hora actual
@@ -38,17 +36,25 @@ def index():
                        nombredia=nombredia, fecha_y_hora_formateada=fecha_y_hora_formateada)
         else:
 
-            idcliente = db.execute(
-                "SELECT idcliente FROM clientes WHERE nombre =:nombremiembro", nombremiembro=nombremiembro)
+            nombre = nombremiembro.split()
+            espacio = " "
+            nombrem = nombre[0] + espacio + nombre[1]
 
-            print(idcliente)
+            idcliente = db.execute(
+                "SELECT idcliente FROM clientes WHERE nombre =:nombremiembro", nombremiembro=nombrem)
+
+            print("hola!!", idcliente[0]["idcliente"])
 
             db.execute("INSERT INTO AsistenciaClientes (idcliente, fechahoraentrada, idadmin) values (:idcliente, :fecha_y_hora_formateada, '1')",
-                       idcliente=idcliente, fecha_y_hora_formateada=fecha_y_hora_formateada)
+                       idcliente=idcliente[0]["idcliente"], fecha_y_hora_formateada=fecha_y_hora_formateada)
 
     clientes = db.execute("SELECT * FROM clientes")
 
     asistencia = db.execute(
-        "SELECT * FROM AsistenciaClientes INNER JOIN clientes on AsistenciaClientes.idac = clientes.idcliente")
+        "SELECT * FROM AsistenciaClientes INNER JOIN clientes on AsistenciaClientes.idcliente = clientes.idcliente")
 
-    return render_template("index.html", clientes=clientes, asistencia=asistencia)
+    print("----", asistencia)
+
+    asistenciadia = db.execute("SELECT * FROM AsistenciaPorDia")
+
+    return render_template("index.html", clientes=clientes, asistencia=asistencia, asistenciadia=asistenciadia)

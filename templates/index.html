@@ -60,10 +60,11 @@
         <div id="formulario1">
           <div class="container">
             <div class="row">
-              <div class="col-lg-8">
+              <div class="col-lg-12">
                 <form action="/" method="post">
                   <div class="dropdown hierarchy-select" id="example">
-                    <input
+                    
+   <input
                       type="text"
                       name="nombremiembro"
                       class="form-control form-control-lg rounded hs-searchbox mb-5"
@@ -109,10 +110,14 @@
                       id="hola"
                     />
                   </div>
+
+                    <button class="btn btn-primary btn-lg btn-block">
+                      enviar
+                    </button>
+                    </div>
+                 
+
                 </form>
-              </div>
-              <div class="col-lg-4">
-                <button class="btn btn-primary btn-lg btn-block">enviar</button>
               </div>
             </div>
           </div>
@@ -123,39 +128,46 @@
           <div class="container mb-5">
             <div class="row">
 
-              <div class="col-lg-8">
+              <div class="col-lg-12">
                 <form action="/" method="post">
                   <div class="container">
                     <div class="row">
-                      <input
-                      type="text"
-                      class="form-control form-control-lg rounded col-lg-6"
-                      placeholder="Nombre Completo!"
-                      aria-label="Search"
-                      name="nombrecliente"
-                    />
-  
-                    <input
-                      type="text"
-                      class="form-control form-control-lg rounded col-lg-6"
-                      placeholder="Apellido"
-                      aria-label="Search"
-                      name="nombrecliente"
-                    />
+<div class="input-group">
+  <input
+  type="text"
+  class="form-control form-control-lg rounded col-lg-6"
+  placeholder="Nombre Completo!"
+  aria-label="Search"
+  name="nombrecliente"
+/>
+
+
+<input
+type="text"
+class="form-control form-control-lg rounded col-lg-6"
+placeholder="Apellido"
+aria-label="Search"
+name="nombrecliente"
+/>
+
+
+
+
+
+<button class="btn btn-primary btn-lg btn-block">
+  enviar
+</button>
+</div>
+
+
                     </div>
                   </div>
-
-
 
                 </form>
               </div>
 
 
-                <div class="col-lg-4">
-                  <button class="btn btn-primary btn-lg btn-block">
-                    enviar
-                  </button>
-                </div>
+
               </div>
             </div>
 
@@ -187,15 +199,23 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for asistencia in asistencia%}
+                  {% for i in asistenciadia%}
                   <tr>
-                    <td>{{asistencia.nombre}}</td>
-                    <td>{{asistencia.apellido}}</td>
-                    <td>{{asistencia.fechahoraentrada}}</td>
-                    {% if asistencia.estadomembresia == 0 %}
-                    <td><span class="badge bg-danger">Inactivo {{asistencia.estadomembresia}}</span></td>
+                    <td>{{i.Nombre}}</td>
+                    <td>- </td>
+                    <td>{{i.fechahoraentrada}}</td>
+                    <td><span class="badge bg-primary">por dia</span></td>
+                  </tr>
+                  {% endfor %}
+                  {% for i in asistencia%}
+                  <tr>
+                    <td>{{i.nombre}}</td>
+                    <td>{{i.apellido}}</td>
+                    <td>{{i.fechahoraentrada}}</td>
+                    {% if i.estadomembresia == 0 %}
+                    <td><span class="badge bg-danger">Inactivo {{i.estadomembresia}}</span></td>
                     {% else%}
-                    <td><span class="badge bg-success">Activo {{asistencia.estadomembresia}}</span></td>
+                    <td><span class="badge bg-success">Activo {{i.estadomembresia}}</span></td>
                     {% endif %}
                   </tr>
                   {% endfor %}
@@ -208,6 +228,11 @@
       </div>
     </div>
 
+    <script>
+      $(document).ready(function() {
+        $('#example').dataTable();
+    } );
+    </script>
   
 
     <script>
